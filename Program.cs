@@ -6,7 +6,7 @@
         //main-ul din clasa Client, si modifica numele din Program.cs din Main_Vechi -> Main
 
         //daca se vrea functionarea Main-ului din client, se schimba numele Main-ului din
-        //Program.cs in altul 
+        //Program.cs in altul
         static void Main_Vechi(string[] args)
         {
             // ==========================================
