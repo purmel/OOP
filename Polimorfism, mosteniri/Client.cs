@@ -6,10 +6,10 @@ namespace s1_1.Polimorfism__mosteniri
 {
     public class Client
     {
-        public void run(IOps obiectDeTest)
+        public void run(IOps obiectDeTest, int a, int b)
         {
-            Console.WriteLine("Rezultat f1: " + obiectDeTest.f1(12, 18));
-            Console.WriteLine("Rezultat f2: " + obiectDeTest.f2(12, 18));
+            Console.WriteLine("Rezultat f1: " + obiectDeTest.f1(a, b));
+            Console.WriteLine("Rezultat f2: " + obiectDeTest.f2(a, b));
             Console.WriteLine("---------------------------------------");
         }
     }
@@ -30,13 +30,13 @@ namespace s1_1.Polimorfism__mosteniri
             D obiectD = new D();
 
             Console.WriteLine("Testam Clasa A - suma si concatenare");
-            client.run(obiectA);
+            client.run(obiectA, 12, 18);
 
             Console.WriteLine("Testam Clasa B - CMMDC si CMMMC");
-            client.run(obiectB);
+            client.run(obiectB, 12, 18);
 
             Console.WriteLine("Testam Clasa D - suma cifrelor si divizorilor");
-            client.run(obiectD);
+            client.run(obiectD, 12, 18);
 
             Console.ReadLine();
         }

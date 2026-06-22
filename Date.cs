@@ -5,7 +5,7 @@ using System.Text;
 
 namespace s1_1
 {
-    public class Date : IComparable
+    public class Date : IComparable<Date>
     {
         private int an;
         private int luna;
@@ -20,9 +20,7 @@ namespace s1_1
             //implementarea pt an bisect, luna februarie
             int[] zileInLuna = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-            bool esteBisect = (an % 4 == 0 && an % 100 != 0) || (an % 400 == 0);
-
-            if (esteBisect)
+            if (EsteBisect(an))
                 zileInLuna[2] = 29;
 
             if (zi > zileInLuna[luna])
@@ -31,6 +29,11 @@ namespace s1_1
             }    
 
             return true;
+        }
+
+        private bool EsteBisect(int a)
+        {
+            return (a % 4 == 0 && a % 100 != 0) || (a % 400 == 0);
         }
 
         public Date()
@@ -51,7 +54,9 @@ namespace s1_1
 
             else
             {
-                throw new ArgumentException("Data nu este valida");
+                an = 1970;
+                luna = 1;
+                zi = 1;
             }
         }
 
@@ -68,18 +73,43 @@ namespace s1_1
             return !(d1 == d2);
         }
 
+        private int TotalZile()
+        {
+            int totalZile = 0;
+
+            for(int i = 1; i<= an; i++)
+            {
+                if (EsteBisect(an))
+                    totalZile += 366;
+
+                else totalZile += 365;
+            }
+
+            int[] zileInLuna = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+            if(EsteBisect(an))
+            {
+                zileInLuna[2] = 29;
+            }
+
+            for(int i = 1; i<= luna; i++)
+            {
+                totalZile += zileInLuna[i];
+            }
+
+            totalZile += zi;
+
+            return totalZile;
+        }
+
         public static bool operator <(Date d1, Date d2)
         {
-            if (d1.an != d2.an) return d1.an < d2.an;
-            if (d1.luna != d2.luna) return d1.luna < d2.luna;
-            else return d1.zi < d2.zi;
+            return d1.TotalZile() < d2.TotalZile();
         }
 
         public static bool operator >(Date d1, Date d2)
         {
-            if (d1.an != d2.an) return d1.an > d2.an;
-            if (d1.luna != d2.luna) return d1.luna > d2.luna;
-            else return d1.zi > d2.zi;
+            return d1.TotalZile() > d2.TotalZile();
         }
 
         public static bool operator <=(Date d1, Date d2)
@@ -94,35 +124,22 @@ namespace s1_1
 
         public static int operator -(Date d1, Date d2)
         {
-            DateTime first = new DateTime(d1.an, d1.luna, d1.zi);
-            DateTime second = new DateTime(d2.an, d2.luna, d2.zi);
-
-            return Math.Abs((first - second).Days);
+            return Math.Abs(d1.TotalZile() - d2.TotalZile());
         }
 
         public override string ToString()
         {
-            return $"{zi}/{luna}/{an}";
+            return $"{zi:D2}/{luna:D2}/{an}";
         }
 
-        public int CompareTo(Object obj)
+        public int CompareTo(Date other)
         {
-            if (obj == null) return 1;
+            if (other is null) return 1;
 
-            Date altadata = obj as Date;
+            if(this.TotalZile() < other.TotalZile()) return -1;
+            if (this.TotalZile() > other.TotalZile()) return 1;
 
-            if(altadata != null)
-            {
-                DateTime acum = new DateTime(this.an, this.luna, this.zi);
-                DateTime alta = new DateTime(altadata.an, altadata.luna, altadata.zi);
-
-                return acum.CompareTo(alta);
-            }
-
-            else
-            {
-                throw new ArgumentException("Obiectul nu este de tip Date");
-            }
+            return 0;
         }
     }
 }

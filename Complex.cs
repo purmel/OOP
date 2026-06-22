@@ -66,6 +66,8 @@ namespace s1_1
 
         public override string ToString()
         {
+            if (imaginara < 0) return $"{reala} - {Math.Abs(imaginara)}i";
+
             return $"{reala} + {imaginara}i";
         }
 

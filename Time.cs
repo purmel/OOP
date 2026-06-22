@@ -33,6 +33,12 @@ namespace s1_1
                 minutul = m;
                 secunda = s;
             }
+            else
+            {
+                ora = 0;
+                minutul = 0;
+                secunda = 0;
+            }
         }
 
         public static bool operator ==(Time t1, Time t2)
@@ -48,18 +54,19 @@ namespace s1_1
             return !(t1 == t2);
         }
 
+        private int TotalSecunde()
+        {
+            return ora * 3600 + minutul * 60 + secunda;
+        }
+
         public static bool operator <(Time t1, Time t2)
         {
-            if (t1.ora != t2.ora) return t1.ora < t2.ora;
-            if (t1.minutul != t2.minutul) return t1.minutul < t2.minutul;
-            return t1.secunda < t2.secunda;
+            return t1.TotalSecunde() < t2.TotalSecunde();
         }
 
         public static bool operator >(Time t1, Time t2)
         {
-            if(t1.ora !=t2.ora) return t1.ora > t2.ora;
-            if (t1.minutul != t2.minutul) return t1.minutul > t2.minutul;
-            return t1.secunda > t2.secunda;
+            return t1.TotalSecunde() > t2.TotalSecunde();
         }
 
         public static bool operator <=(Time t1, Time t2)
@@ -74,6 +81,17 @@ namespace s1_1
 
         public static Time operator +(Time t1, Time t2)
         {
+            int totalSecunde = t1.TotalSecunde() + t2.TotalSecunde();
+
+            totalSecunde = totalSecunde % (24 * 3600);
+
+            int orele = totalSecunde / 3600;
+            totalSecunde = totalSecunde % 3600;
+
+            int minutele = totalSecunde / 60;
+            int secundele = totalSecunde % 60;
+
+            return new Time(orele, minutele, secundele);
             /*int totalsecunde = t1.secunda + t2.secunda;
             int s = totalsecunde % 60;
             int extraMinute = totalsecunde / 60;
@@ -86,7 +104,9 @@ namespace s1_1
             int o = totalore % 24;
 
             return new Time(o, m, s);*/
-            int totalsecunde = t1.secunda + t2.secunda;
+
+            //sau 
+            /*int totalsecunde = t1.secunda + t2.secunda;
             int totalminute = t1.minutul + t2.minutul;
             int totalore = t1.ora + t2.ora;
 
@@ -108,12 +128,12 @@ namespace s1_1
             }
 
             // Cuvântul "new" este obligatoriu la crearea unui obiect nou
-            return new Time(totalore, totalminute, totalsecunde);
+            return new Time(totalore, totalminute, totalsecunde);*/
         }
 
         public override string ToString()
         {
-            return $"{ora}:{minutul}:{secunda}";
+            return $"{ora:D2}:{minutul:D2}:{secunda:D2}";
         }
 
         public int CompareTo(Time other)
