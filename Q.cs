@@ -87,6 +87,9 @@ namespace s1_1
 
         public static Q operator /(Q a, Q b)
         {
+            if (b.numarator == 0)
+                return new Q();
+
             return new Q(a.numarator * b.numitor, a.numitor * b.numarator);
         }
 
