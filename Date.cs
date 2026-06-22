@@ -137,6 +137,7 @@ namespace s1_1
             if (other is null) return 1;
 
             if(this.TotalZile() < other.TotalZile()) return -1;
+
             if (this.TotalZile() > other.TotalZile()) return 1;
 
             return 0;
